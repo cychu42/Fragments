@@ -1,0 +1,20 @@
+{
+  "name": "fragments",
+  "version": "1.0.0",
+  "description": "A cloud-based microservice for collecting fragments of text or images.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cychu42/Fragments.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/cychu42/Fragments/issues"
+  },
+  "homepage": "https://github.com/cychu42/Fragments#readme"
+}
