@@ -1,6 +1,7 @@
 {
   "name": "fragments",
-  "version": "1.0.0",
+  "private": true,
+  "version": "0.0.1",
   "description": "A cloud-based microservice for collecting fragments of text or images.",
   "main": "index.js",
   "scripts": {
@@ -11,10 +12,13 @@
     "url": "git+https://github.com/cychu42/Fragments.git"
   },
   "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "author": "Chen-Yuan Chu",
+  "license": "UNLICENSED",
   "bugs": {
     "url": "https://github.com/cychu42/Fragments/issues"
   },
-  "homepage": "https://github.com/cychu42/Fragments#readme"
+  "homepage": "https://github.com/cychu42/Fragments#readme",
+  "devDependencies": {
+    "prettier": "2.8.2"
+  }
 }
