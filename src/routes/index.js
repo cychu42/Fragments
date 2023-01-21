@@ -27,7 +27,7 @@ router.get('/', (req, res) => {
     status: 'ok',
     author,
     // Use your own GitHub URL for this...
-    githubUrl: 'https://github.com/yourname/fragments',
+    githubUrl: 'https://github.com/cychu42/Fragments',
     version,
   });
 });
