@@ -2,7 +2,7 @@ const express = require('express');
 
 // version and author from package.json
 const { version, author } = require('../../package.json');
-
+const { createSuccessResponse } = require('../response.js');
 // Our authentication middleware (index.js will decide which type of authentication to use)
 const { authenticate } = require('../authorization/index');
 
@@ -22,13 +22,17 @@ router.use(`/v1`, authenticate(), require('./api'));
 router.get('/', (req, res) => {
   // Client's shouldn't cache this response (always request it fresh)
   res.setHeader('Cache-Control', 'no-cache');
+
   // Send a 200 'OK' response
-  res.status(200).json({
-    status: 'ok',
+  const response = createSuccessResponse({
     author,
-    // Use your own GitHub URL for this...
     githubUrl: 'https://github.com/cychu42/Fragments',
     version,
+  });
+
+  res.status(200).json({
+    status: 'ok',
+    ...response,
   });
 });
 
