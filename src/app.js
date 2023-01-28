@@ -5,7 +5,7 @@ const compression = require('compression');
 
 // For passport use
 const passport = require('passport');
-const authenticate = require('./authentication');
+const authenticate = require('./authorization/index');
 
 const logger = require('./logger');
 const pino = require('pino-http')({

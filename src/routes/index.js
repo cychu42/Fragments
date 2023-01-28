@@ -3,8 +3,8 @@ const express = require('express');
 // version and author from package.json
 const { version, author } = require('../../package.json');
 
-// Our authentication middleware
-const { authenticate } = require('../authentication');
+// Our authentication middleware (index.js will decide which type of authentication to use)
+const { authenticate } = require('../authorization/index');
 
 // Create a router that we can use to mount our API
 const router = express.Router();
