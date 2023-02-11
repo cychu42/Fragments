@@ -67,7 +67,11 @@ class Fragment {
    * @returns Promise<Array<Fragment>>
    */
   static async byUser(ownerId, expand = false) {
-    return await listFragments(ownerId, expand);
+    try {
+      return await listFragments(ownerId, expand);
+    } catch (e) {
+      logger.warn('Error with ByUser():', e);
+    }
   }
 
   /**
@@ -78,6 +82,7 @@ class Fragment {
    */
   static async byId(ownerId, id) {
     const result = await readFragment(ownerId, id);
+
     if (!result) {
       const err = new Error('Fragment cannot be found.');
       logger.debug(`Fragment class error: ${err}`);
@@ -126,7 +131,11 @@ class Fragment {
     }
     this.updated = new Date();
     this.size = data.length;
-    return await writeFragmentData(this.ownerId, this.id, data);
+    try {
+      return await writeFragmentData(this.ownerId, this.id, data);
+    } catch (e) {
+      logger.warn('Error with byId():', e);
+    }
   }
 
   /**
