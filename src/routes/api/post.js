@@ -9,14 +9,14 @@ module.exports = async (req, res) => {
   let content;
   if (Buffer.isBuffer(req.body)) {
     const newFrag = new Fragment({
-      ownerId: req.get('authorization'),
+      ownerId: req.user,
       type: req.get('Content-Type'),
       size: 0,
     });
     try {
       await newFrag.save();
       await newFrag.setData(req.body);
-      content = await Fragment.byId(req.get('authorization'), newFrag.id);
+      content = await Fragment.byId(req.user, newFrag.id);
     } catch (e) {
       logger.warn('Error with byId():', e);
     }
