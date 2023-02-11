@@ -1,4 +1,5 @@
 const validateKey = (key) => typeof key === 'string';
+const logger = require('../../../logger');
 
 class MemoryDB {
   constructor() {
@@ -13,6 +14,7 @@ class MemoryDB {
    * @returns {Promise<any>}
    */
   get(primaryKey, secondaryKey) {
+    logger.info('get() in memory-db used.');
     if (!(validateKey(primaryKey) && validateKey(secondaryKey))) {
       throw new Error(
         `primaryKey and secondaryKey strings are required, got primaryKey=${primaryKey}, secondaryKey=${secondaryKey}`
@@ -31,6 +33,7 @@ class MemoryDB {
    * @returns {Promise<void>}
    */
   put(primaryKey, secondaryKey, value) {
+    logger.info('put() in memory-db used.');
     if (!(validateKey(primaryKey) && validateKey(secondaryKey))) {
       throw new Error(
         `primaryKey and secondaryKey strings are required, got primaryKey=${primaryKey}, secondaryKey=${secondaryKey}`
@@ -52,6 +55,7 @@ class MemoryDB {
    * @returns {Promise<any[]>}
    */
   query(primaryKey) {
+    logger.info('query() in memory-db used.');
     if (!validateKey(primaryKey)) {
       throw new Error(`primaryKey string is required, got primaryKey=${primaryKey}`);
     }
@@ -69,6 +73,7 @@ class MemoryDB {
    * @returns {Promise<void>}
    */
   async del(primaryKey, secondaryKey) {
+    logger.info('delete() in memory-db used.');
     if (!(validateKey(primaryKey) && validateKey(secondaryKey))) {
       throw new Error(
         `primaryKey and secondaryKey strings are required, got primaryKey=${primaryKey}, secondaryKey=${secondaryKey}`

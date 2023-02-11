@@ -3,6 +3,7 @@
 const { randomUUID } = require('crypto');
 // Use https://www.npmjs.com/package/content-type to create/parse Content-Type headers
 const contentType = require('content-type');
+const logger = require('../logger');
 
 // Functions for working with fragment metadata/data using our DB
 const {
@@ -29,23 +30,33 @@ class Fragment {
     this.updated = new Date();
 
     if (this.ownerId === undefined) {
-      throw new Error('Fragment is missing ownerId.');
+      const err = new Error('Fragment is missing ownerId.');
+      logger.debug(`Fragment class error: ${err}`);
+      throw err;
     }
 
     if (this.type === undefined) {
-      throw new Error('Fragment is missing type.');
+      const err = new Error('Fragment is missing type.');
+      logger.debug(`Fragment class error: ${err}`);
+      throw err;
     }
 
     if (this.size < 0) {
-      throw new Error('Fragment size cannot be negative.');
+      const err = new Error('Fragment size cannot be negative.');
+      logger.debug(`Fragment class error: ${err}`);
+      throw err;
     }
 
     if (typeof this.size != 'number') {
-      throw new Error('Fragment size must be a number.');
+      const err = new Error('Fragment size must be a number.');
+      logger.debug(`Fragment class error: ${err}`);
+      throw err;
     }
 
     if (!Fragment.isSupportedType(this.type)) {
-      throw new Error('Fragment has invalid type.');
+      const err = new Error('Fragment has invalid type.');
+      logger.debug(`Fragment class error: ${err}`);
+      throw err;
     }
   }
 
@@ -68,7 +79,9 @@ class Fragment {
   static async byId(ownerId, id) {
     const result = await readFragment(ownerId, id);
     if (!result) {
-      throw new Error(`Fragment with id: ${id} cannot be found.`);
+      const err = new Error('Fragment cannot be found.');
+      logger.debug(`Fragment class error: ${err}`);
+      throw err;
     }
     return result;
   }
@@ -107,7 +120,9 @@ class Fragment {
    */
   async setData(data) {
     if (!Buffer.isBuffer(data)) {
-      throw new Error("Argument to Fragment's setData() is not a buffer.");
+      const err = new Error("Argument to Fragment's setData() is not a buffer.");
+      logger.debug(`Fragment class error: ${err}`);
+      throw err;
     }
     this.updated = new Date();
     this.size = data.length;
