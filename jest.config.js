@@ -2,7 +2,7 @@
 const path = require('path');
 const envFile = path.join(__dirname, 'env.jest');
 
-const logger = require('src/logger');
+const logger = require('./src/logger');
 
 // Read the environment variables we use for Jest from our env.jest file
 require('dotenv').config({ path: envFile });
