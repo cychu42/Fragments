@@ -1,4 +1,3 @@
-const { createSuccessResponse } = require('../../response.js');
 const { createErrorResponse } = require('../../response.js');
 const { Fragment } = require('../../model/fragment');
 const logger = require('../../logger');

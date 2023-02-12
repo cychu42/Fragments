@@ -1,7 +1,6 @@
 const request = require('supertest');
 
 const app = require('../../src/app');
-const hash = require('../../src/hash');
 
 describe('Get /v1/fragments/:id', () => {
   const id = '4dcc65b6';
