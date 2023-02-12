@@ -3,7 +3,7 @@ const { createErrorResponse } = require('../../response.js');
 const { Fragment } = require('../../model/fragment');
 const logger = require('../../logger');
 /**
- * Get a list of fragments for the current user
+ * Create a fragment, save it and the data, and show it to the user
  */
 module.exports = async (req, res) => {
   let content;
