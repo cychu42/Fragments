@@ -1,5 +1,5 @@
 # A file for Docker Engine to create an image
-FROM node:18.13.0
+FROM node:18.13.0-alpine3.17@sha256:fda98168118e5a8f4269efca4101ee51dd5c75c0fe56d8eb6fad80455c2f5827
 
 LABEL maintainer="Chen-Yuan Chu <cchu42@myseneca.ca>"
 LABEL description="Fragments node.js microservice"
