@@ -68,7 +68,7 @@ class Fragment {
    */
   static async byUser(ownerId, expand = false) {
     try {
-      return await listFragments(ownerId, expand);
+      return listFragments(ownerId, expand);
     } catch (e) {
       logger.warn('Error with ByUser():', e);
     }
@@ -132,7 +132,7 @@ class Fragment {
     this.updated = new Date();
     this.size = data.length;
     try {
-      return await writeFragmentData(this.ownerId, this.id, data);
+      return writeFragmentData(this.ownerId, this.id, data);
     } catch (e) {
       logger.warn('Error with byId():', e);
     }
