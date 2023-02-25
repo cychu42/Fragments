@@ -35,4 +35,7 @@ router.post('/fragments', rawBody(), require('./post'));
 // ===Get /fragments/:id/===
 router.get('/fragments/:id', require('./getById'));
 
+// ===Get /fragments/:id/info===
+router.get('/fragments/:id/info', require('./info.js'));
+
 module.exports = router;
