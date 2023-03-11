@@ -31,7 +31,8 @@ COPY ./src ./src
 COPY ./tests/.htpasswd ./tests/.htpasswd
 
 # Start the container by running our server
-CMD ["npm start"]
+# This runs node with the src folder, where the index.js is used as entry point
+CMD ["node", "src"]
 
 # We run our service on port 8080
 EXPOSE 8080
