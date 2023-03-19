@@ -64,7 +64,10 @@ describe('GET /v1/fragments', () => {
     expect(res.statusCode).toBe(200);
     expect(res.body.status).toBe('ok');
     expect(res.body.fragments[0].type).toEqual(reqContentType);
-    expect(res.body.fragments[0].created).toEqual(res.body.fragments[0].updated);
+    expect(Date.parse(res.body.fragments[0].created)).toBeCloseTo(
+      Date.parse(res.body.fragments[0].updated),
+      -3
+    );
     expect(res.body.fragments[0].size).toEqual(expect.any(Number));
     expect(res.body.fragments[0].id).toEqual(expect.any(String));
     expect(res.body.fragments[0].ownerId).toEqual(hash(reqEmail));

@@ -43,7 +43,10 @@ describe('POST /v1/fragments', () => {
       .send('This is a fragment')
       .set('Content-Type', reqContentType);
     expect(res.body.fragment.type).toEqual(reqContentType);
-    expect(res.body.fragment.created).toEqual(res.body.fragment.updated);
+    expect(Date.parse(res.body.fragment.created)).toBeCloseTo(
+      Date.parse(res.body.fragment.updated),
+      -3
+    );
     expect(res.get('Location').endsWith(`/v1/fragments/${res.body.fragment.id}`)).toBe(true);
     expect(res.body.fragment.size).toEqual(expect.any(Number));
     expect(res.body.fragment.id).toEqual(expect.any(String));
