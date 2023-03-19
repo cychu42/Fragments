@@ -32,10 +32,10 @@ const rawBody = () =>
 // You can use Buffer.isBuffer(req.body) to test if it was parsed by the raw body parser.
 router.post('/fragments', rawBody(), require('./post'));
 
-// ===Get /fragments/:id/===
+// ===Get /v1/fragments/:id/===
 router.get('/fragments/:id', require('./getById'));
 
-// ===Get /fragments/:id/info===
+// ===Get /v1/fragments/:id/info===
 router.get('/fragments/:id/info', require('./info.js'));
 
 module.exports = router;

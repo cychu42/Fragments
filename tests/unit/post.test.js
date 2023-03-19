@@ -23,6 +23,17 @@ describe('POST /v1/fragments', () => {
     expect(res.body.fragment).toEqual(expect.any(Object));
   });
 
+  test('authenticated users can get a application/json fragment', async () => {
+    const res = await request(app)
+      .post('/v1/fragments')
+      .auth('user1@email.com', 'password1')
+      .send('This is a fragment')
+      .set('Content-Type', 'application/json');
+    expect(res.statusCode).toBe(201);
+    expect(res.body.status).toBe('ok');
+    expect(res.body.fragment).toEqual(expect.any(Object));
+  });
+
   test('authenticated users get a fragment back with correct type, created, updated, size, id, ownerId, and Location header', async () => {
     const reqContentType = 'text/plain';
     const reqEmail = 'user1@email.com';
@@ -38,6 +49,7 @@ describe('POST /v1/fragments', () => {
     expect(res.body.fragment.id).toEqual(expect.any(String));
     expect(res.body.fragment.ownerId).toEqual(hash(reqEmail));
   });
+
   test('trying to create a fragment with an unsupported type returns a 415 error message', async () => {
     const res = await request(app)
       .post('/v1/fragments')

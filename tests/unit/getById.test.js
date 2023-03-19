@@ -1,4 +1,6 @@
 const request = require('supertest');
+var MarkdownIt = require('markdown-it'),
+  md = new MarkdownIt();
 
 const app = require('../../src/app');
 
@@ -16,22 +18,22 @@ describe('Get /v1/fragments/:id', () => {
       .expect(401));
 
   // Using a valid username/password pair should give a success result
-  test('authenticated users can get a fragment', async () => {
+  test('authenticated users can get a fragment of the original type', async () => {
     const postRes = await request(app)
       .post('/v1/fragments')
       .auth('user1@email.com', 'password1')
-      .send('This is a fragment')
-      .set('Content-Type', 'text/plain');
+      .send({ content: 'This is a fragment' })
+      .set('Content-Type', 'application/json');
     const getByIdRes = await request(app)
       .get(`/v1/fragments/${postRes.body.fragment.id}`)
       .auth('user1@email.com', 'password1');
     expect(getByIdRes.statusCode).toBe(200);
-    expect(getByIdRes.text).toBe('This is a fragment');
-    expect(getByIdRes.get('Content-Type')).toBe('text/plain');
+    expect(getByIdRes.text).toBe('{"content":"This is a fragment"}');
+    expect(getByIdRes.get('Content-Type')).toBe('application/json');
   });
 
   // Using a valid username/password pair asking for text/plain should give a success result
-  test('authenticated users can get a text/plain fragment', async () => {
+  test('authenticated users can ask for and get a text/plain fragment', async () => {
     const postRes = await request(app)
       .post('/v1/fragments')
       .auth('user1@email.com', 'password1')
@@ -43,6 +45,22 @@ describe('Get /v1/fragments/:id', () => {
     expect(getByIdRes.statusCode).toBe(200);
     expect(getByIdRes.text).toBe('This is a fragment');
     expect(getByIdRes.get('Content-Type')).toBe('text/plain; charset=utf-8');
+  });
+
+  test('A text/html fragment can be converted from text/markdown fragment', async () => {
+    const markdown = '# This is a fragment';
+    const html = md.render(markdown);
+    const postRes = await request(app)
+      .post('/v1/fragments')
+      .auth('user1@email.com', 'password1')
+      .send(markdown)
+      .set('Content-Type', 'text/markdown');
+    const getByIdRes = await request(app)
+      .get(`/v1/fragments/${postRes.body.fragment.id}.html`)
+      .auth('user1@email.com', 'password1');
+    expect(getByIdRes.statusCode).toBe(200);
+    expect(getByIdRes.text).toBe(html);
+    expect(getByIdRes.get('Content-Type')).toBe('text/html; charset=utf-8');
   });
 
   test('nonexistent fragment id should return 404 error', async () => {
@@ -72,33 +90,7 @@ describe('Get /v1/fragments/:id', () => {
     expect(text.status).toBe('error');
     expect(text.error.code).toBe(415);
     expect(text.error.message).toBe(
-      'Content-Type is not supported; sending an error from POST /v1/fragments'
+      'Content-Type is not supported; sending an error from GET /v1/fragments/:id'
     );
   });
-
-  // test('authenticated users get a fragment back with correct type, created, updated, size, id, ownerId, and Location header', async () => {
-  //   const reqContentType = 'text/plain';
-  //   const reqEmail = 'user1@email.com';
-  //   const res = await request(app)
-  //     .post('/v1/fragments')
-  //     .auth(reqEmail, 'password1')
-  //     .send('This is a fragment')
-  //     .set('Content-Type', reqContentType);
-  //   expect(res.body.fragment.type).toEqual(reqContentType);
-  //   expect(res.body.fragment.created).toEqual(res.body.fragment.updated);
-  //   expect(res.get('Location').endsWith(`/v1/fragments/${res.body.fragment.id}`)).toBe(true);
-  //   expect(res.body.fragment.size).toEqual(expect.any(Number));
-  //   expect(res.body.fragment.id).toEqual(expect.any(String));
-  //   expect(res.body.fragment.ownerId).toEqual(hash(reqEmail));
-  // });
-  // test('trying to create a fragment with an unsupported type returns a 415 error message', async () => {
-  //   const res = await request(app)
-  //     .post('/v1/fragments')
-  //     .auth('user1@email.com', 'password1')
-  //     .send('This is a fragment')
-  //     .set('Content-Type', 'bad/type');
-  //   expect(res.statusCode).toBe(415);
-  //   expect(res.body.status).toBe('error');
-  //   expect(res.body.error).toEqual(expect.any(Object));
-  // });
 });

@@ -17,7 +17,7 @@ const {
 
 class Fragment {
   // A list of Suppoted types
-  static supportedType = ['text/plain'];
+  static supportedType = [`text/plain`, `text/markdown`, `text/html`, `application/json`];
 
   constructor({ id, ownerId, created, updated, type, size = 0 }) {
     this.id = id || randomUUID();
