@@ -68,7 +68,7 @@ describe('GET /v1/fragments', () => {
       Date.parse(res.body.fragments[0].updated),
       -3
     );
-    expect(res.body.fragments[0].size).toEqual(expect.any(Number));
+    expect(res.body.fragments[0].size).toEqual(17);
     expect(res.body.fragments[0].id).toEqual(expect.any(String));
     expect(res.body.fragments[0].ownerId).toEqual(hash(reqEmail));
   });

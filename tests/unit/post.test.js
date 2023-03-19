@@ -48,7 +48,7 @@ describe('POST /v1/fragments', () => {
       -3
     );
     expect(res.get('Location').endsWith(`/v1/fragments/${res.body.fragment.id}`)).toBe(true);
-    expect(res.body.fragment.size).toEqual(expect.any(Number));
+    expect(res.body.fragment.size).toEqual(18);
     expect(res.body.fragment.id).toEqual(expect.any(String));
     expect(res.body.fragment.ownerId).toEqual(hash(reqEmail));
   });

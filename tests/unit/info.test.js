@@ -36,7 +36,7 @@ describe('GET /v1/fragments/:id/info', () => {
       Date.parse(infoRes.body.fragment.updated),
       -3
     );
-    expect(infoRes.body.fragment.size).toEqual(expect.any(Number));
+    expect(infoRes.body.fragment.size).toEqual(18);
     expect(infoRes.body.fragment.id).toEqual(expect.any(String));
     expect(infoRes.body.fragment.ownerId).toEqual(hash(reqEmail));
   });

@@ -26,36 +26,36 @@ class Fragment {
     this.updated = updated;
     this.type = type;
     this.size = size;
-    this.created = new Date();
-    this.updated = new Date();
+    this.created = new Date() || created;
+    this.updated = new Date() || updated;
 
     if (this.ownerId === undefined) {
       const err = new Error('Fragment is missing ownerId.');
-      logger.debug(`Fragment class error: ${err}`);
+      logger.debug(`${err}, Fragment class error`);
       throw err;
     }
 
     if (this.type === undefined) {
       const err = new Error('Fragment is missing type.');
-      logger.debug(`Fragment class error: ${err}`);
+      logger.debug(`${err}, Fragment class error`);
       throw err;
     }
 
     if (this.size < 0) {
       const err = new Error('Fragment size cannot be negative.');
-      logger.debug(`Fragment class error: ${err}`);
+      logger.debug(`${err}, Fragment class error`);
       throw err;
     }
 
-    if (typeof this.size != 'number') {
+    if (typeof this.size !== 'number') {
       const err = new Error('Fragment size must be a number.');
-      logger.debug(`Fragment class error: ${err}`);
+      logger.debug(`${err}, Fragment class error`);
       throw err;
     }
 
     if (!Fragment.isSupportedType(this.type)) {
       const err = new Error('Fragment has invalid type.');
-      logger.debug(`Fragment class error: ${err}`);
+      logger.debug(`${err}, Fragment class error`);
       throw err;
     }
   }
@@ -85,7 +85,7 @@ class Fragment {
 
     if (!result) {
       const err = new Error('Fragment cannot be found.');
-      logger.debug(`Fragment class error: ${err}`);
+      logger.debug(`${err}, Fragment class error`);
       throw err;
     }
     return result;
@@ -126,11 +126,11 @@ class Fragment {
   async setData(data) {
     if (!Buffer.isBuffer(data)) {
       const err = new Error("Argument to Fragment's setData() is not a buffer.");
-      logger.debug(`Fragment class error: ${err}`);
+      logger.debug(`${err}, Fragment class error`);
       throw err;
     }
-    this.updated = new Date();
     this.size = data.length;
+    this.save();
     try {
       return writeFragmentData(this.ownerId, this.id, data);
     } catch (e) {

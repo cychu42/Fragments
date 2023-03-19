@@ -6,7 +6,6 @@ const logger = require('../../logger');
  * Create a fragment, save it and the data, and show it to the user
  */
 module.exports = async (req, res) => {
-  let content;
   if (Buffer.isBuffer(req.body)) {
     const newFrag = new Fragment({
       ownerId: req.user,
@@ -16,7 +15,6 @@ module.exports = async (req, res) => {
     try {
       await newFrag.save();
       await newFrag.setData(req.body);
-      content = await Fragment.byId(req.user, newFrag.id);
     } catch (e) {
       logger.warn('Error with byId():', e);
     }
@@ -27,12 +25,10 @@ module.exports = async (req, res) => {
     );
     res.setHeader('Location', apiUrl);
 
-    logger.debug(`id of the fragment is ${newFrag.id}`);
-    logger.debug(`req.headers.host is ${req.headers.host}`);
-    logger.debug(`apiUrl is ${apiUrl}`);
+    logger.debug({ id: newFrag.id, host: req.headers.host, apiUrl }, 'Fragment created');
 
     const response = createSuccessResponse({
-      fragment: content,
+      fragment: newFrag,
     });
     logger.info(`Content-Type is supported; sending a response from POST /v1/fragments`);
     res.status(201).json(response);
