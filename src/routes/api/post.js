@@ -21,7 +21,7 @@ module.exports = async (req, res) => {
     // Setting Location header
     const apiUrl = new URL(
       `/v1/fragments/${newFrag.id}`,
-      `https://${process.env.API_URL || req.headers.host}`
+      `http://${process.env.API_URL || req.headers.host}`
     );
     res.setHeader('Location', apiUrl);
 
