@@ -1,14 +1,14 @@
-# POST Test
+# POST Test for JSON fragment
 
 # Authenticated POST to /v1/fragments
 POST http://localhost:8080/v1/fragments
-# We're sending a plain text fragment
-Content-Type: text/plain
+# We're sending a JSON fragment
+Content-Type: application/json
 # Include HTTP Basic Auth credentials; must place after any header
 [BasicAuth]
 user1@email.com:password1
-# Body of the request goes in `...` when it's a string
-`This is a fragment!`
+# Body of the request
+{ "content": "This is a fragment!" }
 
 #1. We expect to get back an HTTP 201
 HTTP/1.1 201
@@ -25,9 +25,9 @@ jsonpath "$.fragment.ownerId" matches "^[0-9a-fA-F]+$"
 # You could also write a regex for this and use matches
 jsonpath "$.fragment.created" isString
 jsonpath "$.fragment.updated" isString
-jsonpath "$.fragment.type" == "text/plain"
+jsonpath "$.fragment.type" == "application/json"
 # 19 is the length of our fragment data: 'This is a fragment!'
-jsonpath "$.fragment.size" == 19
+jsonpath "$.fragment.size" == 36
 # Capture the Location URL into a variable named `url`
 [Captures]
 url: header "Location"
@@ -38,7 +38,7 @@ GET {{url}}
 user1@email.com:password1
 
 HTTP/1.1 200
-Content-Type: text/plain
-Content-Length: 19
+Content-Type: application/json
+Content-Length: 36
 [Asserts]
-body == "This is a fragment!"
+jsonpath "$.content" == "This is a fragment!"

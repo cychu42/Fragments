@@ -1,9 +1,9 @@
-# POST Test
+# POST Test for charset Content-Type
 
 # Authenticated POST to /v1/fragments
 POST http://localhost:8080/v1/fragments
 # We're sending a plain text fragment
-Content-Type: text/plain
+Content-Type: text/plain; charset=utf-8
 # Include HTTP Basic Auth credentials; must place after any header
 [BasicAuth]
 user1@email.com:password1
@@ -25,7 +25,7 @@ jsonpath "$.fragment.ownerId" matches "^[0-9a-fA-F]+$"
 # You could also write a regex for this and use matches
 jsonpath "$.fragment.created" isString
 jsonpath "$.fragment.updated" isString
-jsonpath "$.fragment.type" == "text/plain"
+jsonpath "$.fragment.type" == "text/plain; charset=utf-8"
 # 19 is the length of our fragment data: 'This is a fragment!'
 jsonpath "$.fragment.size" == 19
 # Capture the Location URL into a variable named `url`
@@ -38,7 +38,7 @@ GET {{url}}
 user1@email.com:password1
 
 HTTP/1.1 200
-Content-Type: text/plain
+Content-Type: text/plain; charset=utf-8
 Content-Length: 19
 [Asserts]
 body == "This is a fragment!"
