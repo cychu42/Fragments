@@ -9,7 +9,7 @@
     "test": "jest -c jest.config.js --runInBand --",
     "test:integration": "hurl --test --glob \"tests/integration/**/*.hurl\"",
     "coverage": "jest -c jest.config.js --runInBand --coverage",
-    "lint": "eslint --config .eslintrc.js src/** tests/**",
+    "lint": "eslint --ignore-path .eslintignore --config .eslintrc.js src/** tests/**",
     "start": "node src/index.js",
     "dev": "cross-env LOG_LEVEL=debug nodemon ./src/index.js --watch src",
     "debug": "cross-env LOG_LEVEL=debug nodemon --inspect=0.0.0.0:9229 ./src/index.js --watch src"
