@@ -1,4 +1,5 @@
 const express = require('express');
+const os = require('os');
 
 // version and author from package.json
 const { version, author } = require('../../package.json');
@@ -28,6 +29,7 @@ router.get('/', (req, res) => {
     author,
     githubUrl: 'https://github.com/cychu42/Fragments',
     version,
+    hostname: os.hostname(),
   });
 
   res.status(200).json({
