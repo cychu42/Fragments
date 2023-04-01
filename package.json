@@ -1,7 +1,7 @@
 {
   "name": "fragments",
   "private": true,
-  "version": "0.7.7",
+  "version": "0.9.0",
   "description": "A cloud-based microservice for collecting fragments of text or images.",
   "main": "index.js",
   "scripts": {
