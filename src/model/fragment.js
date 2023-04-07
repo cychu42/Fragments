@@ -88,6 +88,7 @@ class Fragment {
       logger.debug(`${err}, Fragment class error`);
       throw err;
     }
+    logger.debug(`${JSON.stringify(result)}, is returned from byId().`);
     return result;
   }
 
@@ -115,6 +116,7 @@ class Fragment {
    * @returns Promise<Buffer>
    */
   getData() {
+    logger.debug(`getData() entered - ownerId: ${this.ownerId}, id: ${this.id}`);
     return readFragmentData(this.ownerId, this.id);
   }
 

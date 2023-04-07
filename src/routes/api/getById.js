@@ -2,6 +2,7 @@ const { createErrorResponse } = require('../../response.js');
 const { Fragment } = require('../../model/fragment');
 const logger = require('../../logger');
 const path = require('path');
+const { readFragmentData } = require('../../model/data/aws/index.js');
 var MarkdownIt = require('markdown-it'),
   md = new MarkdownIt();
 /**
@@ -12,7 +13,13 @@ module.exports = async (req, res) => {
 
   try {
     fragment = await Fragment.byId(req.user, path.parse(req.params.id).name);
-    content = await fragment.getData();
+
+    // Given return object differs between in-memory and AWS services, change implementation slightly
+    if (process.env.AWS_REGION) {
+      content = await readFragmentData(fragment.ownerId, fragment.id);
+    } else {
+      content = await fragment.getData();
+    }
   } catch (e) {
     logger.warn(`The fragment data for ${req.params.id} cannot be found, and the error:`, e);
     const response = createErrorResponse(
