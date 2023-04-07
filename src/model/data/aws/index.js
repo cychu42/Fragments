@@ -8,6 +8,7 @@ const logger = require('../../../logger');
 
 // Writes a fragment to DynamoDB. Returns a Promise.
 function writeFragment(fragment) {
+  logger.info(`AWS writeFragment in ${__dirname} used.`);
   // Configure our PUT params, with the name of the table and item (attributes and keys)
   const params = {
     TableName: process.env.AWS_DYNAMODB_TABLE_NAME,
@@ -27,6 +28,7 @@ function writeFragment(fragment) {
 
 // Reads a fragment from DynamoDB. Returns a Promise<fragment|undefined>
 async function readFragment(ownerId, id) {
+  logger.info(`AWS readFragment in ${__dirname} used.`);
   // Configure our GET params, with the name of the table and key (partition key + sort key)
   const params = {
     TableName: process.env.AWS_DYNAMODB_TABLE_NAME,
@@ -51,7 +53,7 @@ async function readFragment(ownerId, id) {
 // Writes a fragment's data to an S3 Object in a Bucket
 // https://github.com/awsdocs/aws-sdk-for-javascript-v3/blob/main/doc_source/s3-example-creating-buckets.md#upload-an-existing-object-to-an-amazon-s3-bucket
 async function writeFragmentData(ownerId, id, data) {
-  logger.info(`writeFragmentData in ${__dirname} used.`);
+  logger.info(`AWS writeFragmentData in ${__dirname} used.`);
   // Create the PUT API params from our details
   const params = {
     Bucket: process.env.AWS_S3_BUCKET_NAME,
@@ -98,7 +100,7 @@ const streamToBuffer = (stream) =>
 // Reads a fragment's data from S3 and returns (Promise<Buffer>)
 // https://github.com/awsdocs/aws-sdk-for-javascript-v3/blob/main/doc_source/s3-example-creating-buckets.md#getting-a-file-from-an-amazon-s3-bucket
 async function readFragmentData(ownerId, id) {
-  logger.info(`readFragmentData in ${__dirname} used.`);
+  logger.info(`AWS readFragmentData in ${__dirname} used.`);
   // Create the PUT API params from our details
   const params = {
     Bucket: process.env.AWS_S3_BUCKET_NAME,
@@ -124,6 +126,7 @@ async function readFragmentData(ownerId, id) {
 // Get a list of fragments, either ids-only, or full Objects, for the given user.
 // Returns a Promise<Array<Fragment>|Array<string>|undefined>
 async function listFragments(ownerId, expand = false) {
+  logger.info(`AWS listFragment in ${__dirname} used.`);
   // Configure our QUERY params, with the name of the table and the query expression
   const params = {
     TableName: process.env.AWS_DYNAMODB_TABLE_NAME,
@@ -164,7 +167,7 @@ async function listFragments(ownerId, expand = false) {
 // Delete a fragment's metadata  from memory db and data from s3. Returns a Promise
 // https://docs.aws.amazon.com/AWSJavaScriptSDK/v3/latest/clients/client-s3/classes/deleteobjectcommand.html
 async function deleteFragment(ownerId, id) {
-  logger.info(`deleteFragment in ${__dirname} used.`);
+  logger.info(`AWS deleteFragment in ${__dirname} used.`);
   // Create the PUT API params from our details
   const params = {
     Bucket: process.env.AWS_S3_BUCKET_NAME,
