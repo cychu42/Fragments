@@ -28,6 +28,10 @@ class Fragment {
     this.size = size;
     this.created = new Date() || created;
     this.updated = new Date() || updated;
+    if (process.env.AWS_REGION) {
+      this.created = JSON.stringify(this.created);
+      this.updated = JSON.stringify(this.created);
+    }
 
     if (this.ownerId === undefined) {
       const err = new Error('Fragment is missing ownerId.');
@@ -108,6 +112,9 @@ class Fragment {
    */
   save() {
     this.updated = new Date();
+    if (process.env.AWS_REGION) {
+      this.updated = JSON.stringify(this.created);
+    }
     return writeFragment(this);
   }
 
