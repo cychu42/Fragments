@@ -27,7 +27,7 @@ describe('POST /v1/fragments', () => {
     const res = await request(app)
       .post('/v1/fragments')
       .auth('user1@email.com', 'password1')
-      .send('This is a fragment')
+      .send({ content: 'This is a fragment' })
       .set('Content-Type', 'application/json');
     expect(res.statusCode).toBe(201);
     expect(res.body.status).toBe('ok');
