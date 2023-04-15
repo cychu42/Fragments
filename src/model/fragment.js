@@ -4,6 +4,8 @@ const { randomUUID } = require('crypto');
 // Use https://www.npmjs.com/package/content-type to create/parse Content-Type headers
 const contentType = require('content-type');
 const logger = require('../logger');
+var MarkdownIt = require('markdown-it'),
+  md = new MarkdownIt();
 
 // Functions for working with fragment metadata/data using our DB
 const {
@@ -193,6 +195,23 @@ class Fragment {
       value = contentType.parse(value).type;
     }
     return Fragment.supportedType.includes(value);
+  }
+
+  /**
+   * Returns the converted content by type
+   * @param {string} type a Content-Type value (e.g., 'text/plain' or 'text/plain: charset=utf-8')
+   * @returns {boolean} true if we support this Content-Type (i.e., type/subtype)
+   */
+  static convert(content, fromType, toType) {
+    if (fromType == 'text/*' && toType == 'text/plain') {
+      // convert any text type to text/plain
+      content = content.toString();
+    } else if (fromType == 'text/markdown' && toType == 'text/html') {
+      // convert markdown to html
+      content = md.render(content.toString());
+    }
+
+    return content;
   }
 }
 

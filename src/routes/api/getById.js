@@ -3,8 +3,7 @@ const { Fragment } = require('../../model/fragment');
 const logger = require('../../logger');
 const path = require('path');
 const { readFragmentData } = require('../../model/data/aws/index.js');
-var MarkdownIt = require('markdown-it'),
-  md = new MarkdownIt();
+
 /**
  * Returns an existing fragment by id
  */
@@ -39,15 +38,17 @@ module.exports = async (req, res) => {
         'text/plain Content-Type is supported; sending a response from GET /v1/fragments/:id'
       );
 
-      // Send content as text
-      res.status(200).send(content.toString());
+      // Conmvert content to text/plain
+      content = Fragment.convert(content, 'text/*', 'text/plain');
+
+      res.status(200).send(content);
     } else if (req.params.id.endsWith('.html')) {
       //change the content-type header for text/plain
       res.setHeader('Content-Type', 'text/html');
 
       // convert markdown to html
-      if (fragment.type == 'text/markdown') {
-        content = md.render(content.toString());
+      if (fragment.type === 'text/markdown') {
+        content = Fragment.convert(content, 'text/markdown', 'text/html');
       }
 
       logger.info(
