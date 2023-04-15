@@ -1,9 +1,14 @@
 # Fragments
 
 A cloud-based microservice for collecting fragments of text or images.
-To start docker containers for the server, enter `npm run docker` command.
+
 To start the server at `http://localhost:8080`, enter `npm run start` command.
-This local version would use in-memory database and storage.
+
+- Without `AWS_REGION` environment variable, this local copy would use in-memory database and storage. If set, AWS S3 handles data, and AWS DynamoDB handles metadata.
+
+To start local docker containers for the server and dependent services, enter `npm run docker` command.
+
+- This method would have `AWS_REGION` environment variable set, and thus AWS S3 (LocalStack) handles data, and AWS DynamoDB (DynamoDB Local) handles metadata.
 
 # For Developers
 
