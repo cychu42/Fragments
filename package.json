@@ -7,12 +7,15 @@
   "scripts": {
     "test:watch": "jest -c jest.config.js --runInBand --watch --",
     "test": "jest -c jest.config.js --runInBand --",
-    "test:integration": "hurl --test --glob \"tests/integration/**/*.hurl\"",
+    "test:hurl": "hurl --test --glob \"tests/integration/**/*.hurl\"",
+    "test:e2e": "npm run docker:build && npm run setup:e2e && npm run test:hurl",
     "coverage": "jest -c jest.config.js --runInBand --coverage",
     "lint": "eslint --config .eslintrc.js src/** tests/unit/**",
     "start": "node src/index.js",
     "dev": "cross-env LOG_LEVEL=debug nodemon ./src/index.js --watch src",
-    "setup:test": "sh ./scripts/local-aws-setup.sh",
+    "setup:e2e": "sh ./scripts/local-aws-setup.sh",
+    "docker": "docker compose up -d",
+    "docker:build": "docker compose up --build -d",
     "debug": "cross-env LOG_LEVEL=debug nodemon --inspect=0.0.0.0:9229 ./src/index.js --watch src"
   },
   "repository": {

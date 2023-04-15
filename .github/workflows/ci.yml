@@ -88,7 +88,7 @@ jobs:
         # $ chmod +x ./scripts/local-aws-setup.sh; Done
         run: ./scripts/local-aws-setup.sh
       - name: Run Hurl Tests
-        run: npm run test:integration
+        run: npm run test:hurl
 
   docker-hub:
     name: Build and Push to Docker Hub
