@@ -8,6 +8,9 @@ const logger = require('../../logger.js');
 module.exports = async (req, res) => {
   let fullInfo = false;
   let response, result;
+
+  // Using == deliberately, as === will not recognized 1 properly and fail a test
+  // See test starting from line 51 at tests\unit\get.test.js
   if (req.query.expand == 1) {
     fullInfo = true;
   }
