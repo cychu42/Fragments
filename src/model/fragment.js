@@ -206,6 +206,7 @@ class Fragment {
    * @returns {any} converted content; one of supported types
    */
   static async convert(content, fromType, toType) {
+    logger.debug(`Coonvertion used:`, { content: content, fromType: fromType, toType: toType });
     if (fromType === toType) {
       // do nothing, as type is the same
     } else if (

@@ -19,6 +19,7 @@ function unsupportedConversion(res) {
 module.exports = async (req, res) => {
   let fragment, content;
   let ext = path.parse(req.params.id).ext;
+  logger.debug('ext and id are', { ext: ext, id: req.params.id });
   try {
     fragment = await Fragment.byId(req.user, path.parse(req.params.id).name);
 
