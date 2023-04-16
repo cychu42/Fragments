@@ -13,7 +13,6 @@ module.exports = async (req, res) => {
       size: 0,
     });
     try {
-      await newFrag.save();
       await newFrag.setData(req.body);
     } catch (e) {
       logger.warn('Error with byId():', e);
