@@ -89,8 +89,5 @@ describe('Get /v1/fragments/:id', () => {
     const text = JSON.parse(getByIdRes.text);
     expect(text.status).toBe('error');
     expect(text.error.code).toBe(415);
-    expect(text.error.message).toBe(
-      'Content-Type is not supported; sending an error from GET /v1/fragments/:id'
-    );
   });
 });

@@ -9,7 +9,7 @@ const { readFragmentData } = require('../../model/data/aws/index.js');
  */
 module.exports = async (req, res) => {
   let fragment, content;
-
+  const ext = path.parse(req.params.id).ext;
   try {
     fragment = await Fragment.byId(req.user, path.parse(req.params.id).name);
 
@@ -29,42 +29,42 @@ module.exports = async (req, res) => {
     return; // Don't go any further
   }
 
-  // If :id route specifies a type at the end...
-  if (req.params.id.includes('.')) {
-    if (req.params.id.endsWith('.txt')) {
-      //change the content-type header for text/plain
-      res.setHeader('Content-Type', 'text/plain');
-      logger.info(
-        'text/plain Content-Type is supported; sending a response from GET /v1/fragments/:id'
-      );
+  // If :id route specifies a type at the end, then do conversion
 
-      // Conmvert content to text/plain
-      content = Fragment.convert(content, 'text/*', 'text/plain');
+  if (ext === '.txt') {
+    //change the content-type header for text/plain
+    res.setHeader('Content-Type', 'text/plain');
+    logger.info(
+      'text/plain Content-Type is supported; sending a response from GET /v1/fragments/:id'
+    );
 
-      res.status(200).send(content);
-    } else if (req.params.id.endsWith('.html')) {
-      //change the content-type header for text/plain
-      res.setHeader('Content-Type', 'text/html');
+    // Convert content to text/plain
+    content = Fragment.convert(content, 'text/*', 'text/plain');
 
-      // convert markdown to html
-      if (fragment.type === 'text/markdown') {
-        content = Fragment.convert(content, 'text/markdown', 'text/html');
-      }
+    res.status(200).send(content);
+  } else if (ext === '.html') {
+    //change the content-type header for text/plain
+    res.setHeader('Content-Type', 'text/html');
 
-      logger.info(
-        'text/html Content-Type is supported; sending a response from GET /v1/fragments/:id'
-      );
-
-      res.status(200).send(content);
-    } else {
-      // unsupported Content-Type
-      let msg = 'Content-Type is not supported; sending an error from GET /v1/fragments/:id';
-      logger.info(msg);
-      const response = createErrorResponse(415, msg);
-      res.status(415).json(response);
+    // convert markdown to html
+    if (fragment.type === 'text/markdown') {
+      content = Fragment.convert(content, 'text/markdown', 'text/html');
     }
-  } else {
-    // no Content-Type specified, so send as it is
+
+    logger.info(
+      'text/html Content-Type is supported; sending a response from GET /v1/fragments/:id'
+    );
+
+    res.status(200).send(content);
+  } else if (req.params.id.includes('.')) {
+    // unsupported Content-Type
+    logger.info('Unsupported Content-Type');
+    const response = createErrorResponse(415, 'Unsupported Content-Type');
+    res.status(415).json(response);
+  }
+
+  // no Content-Type specified, so send as it is
+  if (!req.params.id.includes('.')) {
     logger.info(`No Content-Type specified; sending a response from GET /v1/fragments/:id`);
     res.setHeader('Content-Type', fragment.type);
     res.status(200).send(content);

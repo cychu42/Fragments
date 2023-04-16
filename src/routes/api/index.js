@@ -39,7 +39,7 @@ router.get('/fragments/:id', require('./getById'));
 router.get('/fragments/:id/info', require('./info.js'));
 
 // ===PUT /v1/fragments:id===
-router.put('/fragments/:id', require('./update.js'));
+router.put('/fragments/:id', rawBody(), require('./update.js'));
 
 // ===Delete /v1/fragments/delete===
 router.delete('/fragments/:id', require('./delete.js'));

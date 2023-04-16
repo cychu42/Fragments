@@ -6,6 +6,7 @@ const contentType = require('content-type');
 const logger = require('../logger');
 var MarkdownIt = require('markdown-it'),
   md = new MarkdownIt();
+const sharp = require('sharp');
 
 // Functions for working with fragment metadata/data using our DB
 const {
@@ -199,16 +200,39 @@ class Fragment {
 
   /**
    * Returns the converted content by type
-   * @param {string} type a Content-Type value (e.g., 'text/plain' or 'text/plain: charset=utf-8')
-   * @returns {boolean} true if we support this Content-Type (i.e., type/subtype)
+   * @param {any} content content to be converted; one of supported types
+   * @param {string} fromType a Content-Type value
+   * @param {string} toType a Content-Type value
+   * @returns {any} converted content; one of supported types
    */
-  static convert(content, fromType, toType) {
-    if (fromType == 'text/*' && toType == 'text/plain') {
+  static async convert(content, fromType, toType) {
+    if (fromType === toType) {
+      // do nothing, as type is the same
+    } else if (fromType === 'text/*' && toType === 'text/plain') {
       // convert any text type to text/plain
       content = content.toString();
-    } else if (fromType == 'text/markdown' && toType == 'text/html') {
+    } else if (fromType === 'application/json' && toType === 'text/plain') {
+      // convert JSON to text/plain
+      content = JSON.stringify(content).replace(/["]+/g, '');
+    } else if (fromType === 'text/markdown' && toType === 'text/html') {
       // convert markdown to html
       content = md.render(content.toString());
+    } else if (fromType === 'image' && toType === 'image/png') {
+      // convert an image to image/png
+      content = await sharp(content).png().toBuffer();
+    } else if (fromType === 'image' && toType === 'image/jpeg') {
+      // convert an image to image/jpeg
+      content = await sharp(content).jpeg().toBuffer();
+    } else if (fromType === 'image' && toType === 'image/webp') {
+      // convert an image to image/webp
+      content = await sharp(content).webp().toBuffer();
+    } else if (fromType === 'image' && toType === 'image/gif') {
+      // convert an image to image/gif
+      content = await sharp(content).gif().toBuffer();
+    } else {
+      const err = new Error('Invalid convertion');
+      logger.debug(`${err}, Fragment class error`);
+      throw err;
     }
 
     return content;
