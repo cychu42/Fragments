@@ -39,7 +39,7 @@ module.exports = async (req, res) => {
     );
 
     // Convert content to text/plain
-    content = Fragment.convert(content, 'text/*', 'text/plain');
+    content = await Fragment.convert(content, 'text/*', 'text/plain');
 
     res.status(200).send(content);
   } else if (ext === '.html') {
@@ -48,7 +48,7 @@ module.exports = async (req, res) => {
 
     // convert markdown to html
     if (fragment.type === 'text/markdown') {
-      content = Fragment.convert(content, 'text/markdown', 'text/html');
+      content = await Fragment.convert(content, 'text/markdown', 'text/html');
     }
 
     logger.info(
