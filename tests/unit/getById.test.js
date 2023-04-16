@@ -33,7 +33,7 @@ describe('Get /v1/fragments/:id', () => {
   });
 
   // Using a valid username/password pair asking for text/plain should give a success result
-  test('authenticated users can ask for and get a text/plain fragment', async () => {
+  test('Authenticated users can ask for and get a text/plain fragment', async () => {
     const postRes = await request(app)
       .post('/v1/fragments')
       .auth('user1@email.com', 'password1')
@@ -61,6 +61,53 @@ describe('Get /v1/fragments/:id', () => {
     expect(getByIdRes.statusCode).toBe(200);
     expect(getByIdRes.text).toBe(html);
     expect(getByIdRes.get('Content-Type')).toBe('text/html; charset=utf-8');
+  });
+
+  test('A text/plain fragment can be converted from text/markdown fragment', async () => {
+    const markdown = '# This is a fragment';
+    const postRes = await request(app)
+      .post('/v1/fragments')
+      .auth('user1@email.com', 'password1')
+      .send(markdown)
+      .set('Content-Type', 'text/markdown');
+    const getByIdRes = await request(app)
+      .get(`/v1/fragments/${postRes.body.fragment.id}.txt`)
+      .auth('user1@email.com', 'password1');
+    expect(getByIdRes.statusCode).toBe(200);
+    expect(getByIdRes.text).toBe('# This is a fragment');
+    expect(getByIdRes.get('Content-Type')).toBe('text/plain; charset=utf-8');
+  });
+
+  test('A text/plain fragment can be converted from text/html fragment', async () => {
+    const markdown = '# This is a fragment';
+    const html = md.render(markdown);
+
+    const postRes = await request(app)
+      .post('/v1/fragments')
+      .auth('user1@email.com', 'password1')
+      .send(html)
+      .set('Content-Type', 'text/html');
+    const getByIdRes = await request(app)
+      .get(`/v1/fragments/${postRes.body.fragment.id}.txt`)
+      .auth('user1@email.com', 'password1');
+    expect(getByIdRes.statusCode).toBe(200);
+    expect(getByIdRes.text).toBe(html.toString());
+    expect(getByIdRes.get('Content-Type')).toBe('text/plain; charset=utf-8');
+  });
+
+  test('A text/plain fragment can be converted from application/json fragment', async () => {
+    const json = { content: 'This is a fragment' };
+    const postRes = await request(app)
+      .post('/v1/fragments')
+      .auth('user1@email.com', 'password1')
+      .send(json)
+      .set('Content-Type', 'application/json');
+    const getByIdRes = await request(app)
+      .get(`/v1/fragments/${postRes.body.fragment.id}.txt`)
+      .auth('user1@email.com', 'password1');
+    expect(getByIdRes.statusCode).toBe(200);
+    expect(getByIdRes.text).toBe(JSON.stringify(json).replace(/["]+/g, ''));
+    expect(getByIdRes.get('Content-Type')).toBe('text/plain; charset=utf-8');
   });
 
   test('nonexistent fragment id should return 404 error', async () => {
