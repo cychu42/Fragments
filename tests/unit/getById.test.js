@@ -106,7 +106,7 @@ describe('Get /v1/fragments/:id', () => {
       .get(`/v1/fragments/${postRes.body.fragment.id}.txt`)
       .auth('user1@email.com', 'password1');
     expect(getByIdRes.statusCode).toBe(200);
-    expect(getByIdRes.text).toBe(JSON.stringify(json).replace(/["]+/g, ''));
+    expect(getByIdRes.text).toBe(JSON.stringify(json).replace(/["']+/g, ''));
     expect(getByIdRes.get('Content-Type')).toBe('text/plain; charset=utf-8');
   });
 

@@ -1,4 +1,4 @@
-# POST Test for authenticated user
+# POST Test for unauthenticated user
 
 # Authenticated POST to /v1/fragments
 POST http://localhost:8080/v1/fragments

@@ -216,7 +216,7 @@ class Fragment {
       content = content.toString();
     } else if (fromType === 'application/json' && toType === 'text/plain') {
       // convert JSON to text/plain
-      content = JSON.stringify(JSON.parse(content)).replace(/["]+/g, '');
+      content = JSON.stringify(JSON.parse(content)).replace(/["']+/g, '');
     } else if (fromType === 'text/markdown' && toType === 'text/html') {
       // convert markdown to html
       content = md.render(content.toString());
