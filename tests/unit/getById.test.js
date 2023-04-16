@@ -44,7 +44,7 @@ describe('Get /v1/fragments/:id', () => {
       .auth('user1@email.com', 'password1');
     expect(getByIdRes.statusCode).toBe(200);
     expect(getByIdRes.text).toBe('This is a fragment');
-    expect(getByIdRes.get('Content-Type')).toBe('text/plain; charset=utf-8');
+    expect(getByIdRes.get('Content-Type')).toBe('text/plain');
   });
 
   test('A text/html fragment can be converted from text/markdown fragment', async () => {

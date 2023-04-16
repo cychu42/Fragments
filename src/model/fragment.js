@@ -208,7 +208,10 @@ class Fragment {
   static async convert(content, fromType, toType) {
     if (fromType === toType) {
       // do nothing, as type is the same
-    } else if (fromType === 'text/*' && toType === 'text/plain') {
+    } else if (
+      (fromType === 'text/plain' || fromType === 'text/markdown' || fromType === 'text/html') &&
+      toType === 'text/plain'
+    ) {
       // convert any text type to text/plain
       content = content.toString();
     } else if (fromType === 'application/json' && toType === 'text/plain') {
@@ -217,20 +220,32 @@ class Fragment {
     } else if (fromType === 'text/markdown' && toType === 'text/html') {
       // convert markdown to html
       content = md.render(content.toString());
-    } else if (fromType === 'image' && toType === 'image/png') {
+    } else if (
+      (fromType === 'image/jpeg' || fromType === 'image/webp' || fromType === 'image/gif') &&
+      toType === 'image/png'
+    ) {
       // convert an image to image/png
       content = await sharp(content).png().toBuffer();
-    } else if (fromType === 'image' && toType === 'image/jpeg') {
+    } else if (
+      (fromType === 'image/png' || fromType === 'image/webp' || fromType === 'image/gif') &&
+      toType === 'image/jpeg'
+    ) {
       // convert an image to image/jpeg
       content = await sharp(content).jpeg().toBuffer();
-    } else if (fromType === 'image' && toType === 'image/webp') {
+    } else if (
+      (fromType === 'image/jpeg' || fromType === 'image/png' || fromType === 'image/gif') &&
+      toType === 'image/webp'
+    ) {
       // convert an image to image/webp
       content = await sharp(content).webp().toBuffer();
-    } else if (fromType === 'image' && toType === 'image/gif') {
+    } else if (
+      (fromType === 'image/jpeg' || fromType === 'image/webp' || fromType === 'image/png') &&
+      toType === 'image/gif'
+    ) {
       // convert an image to image/gif
       content = await sharp(content).gif().toBuffer();
     } else {
-      const err = new Error('Invalid convertion');
+      const err = new Error('Invalid conversion');
       logger.debug(`${err}, Fragment class error`);
       throw err;
     }
