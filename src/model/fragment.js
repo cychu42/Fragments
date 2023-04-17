@@ -42,7 +42,7 @@ class Fragment {
     this.updated = new Date() || updated;
     if (process.env.AWS_REGION) {
       this.created = JSON.stringify(this.created).replace(/["]+/g, '');
-      this.updated = JSON.stringify(this.created).replace(/["]+/g, '');
+      this.updated = JSON.stringify(this.updated).replace(/["]+/g, '');
     }
 
     if (this.ownerId === undefined) {
@@ -125,7 +125,7 @@ class Fragment {
   save() {
     this.updated = new Date();
     if (process.env.AWS_REGION) {
-      this.updated = JSON.stringify(this.created).replace(/["]+/g, '');
+      this.updated = JSON.stringify(this.updated).replace(/["]+/g, '');
     }
     return writeFragment(this);
   }
